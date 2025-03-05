@@ -1,0 +1,47 @@
+version: '3'
+services:
+  java:
+    image: "openjdk:latest"
+    container_name: "minerva-backend"
+    build: .
+    restart: on-failure
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    environment:
+      DATABASE_USER: "${DATABASE_USER}"
+      DATABASE_PASSWORD: "${DATABASE_PASSWORD}"
+      APP_PORT: "${APP_PORT}"
+      APP_AMBIENT: "${APP_AMBIENT}"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: ["java", "-jar", "app.jar"]
+    networks:
+      - default_network
+
+  db:
+    image: "neo4j:latest"
+    container_name: "minerva-db"
+    restart: always
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    env_file:
+      - .env
+    environment:
+      NEO4J_AUTH: "${DATABASE_USER}/${DATABASE_PASSWORD}"
+    volumes:
+      - /$HOME/neo4j/logs:/logs
+      - /$HOME/neo4j/config:/config
+      - /$HOME/neo4j/data:/data
+      - /$HOME/neo4j/plugins:/plugins
+    networks:
+      - default_network
+
+
+networks:
+  default_network:
