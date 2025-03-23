@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
+import java.util.UUID;
 
 @Repository
 @AllArgsConstructor
@@ -18,46 +18,42 @@ public class AccountRepositoryImpl implements AccountRepository {
     private AccountMapper accountMapper;
 
     @Override
-    public CompletableFuture<Account> save(Account account) {
-        return accountNodeRepository.save(accountMapper.toEntity(account))
-                .map(accountMapper::toDomain)
-                .toFuture();
+    public Account save(Account account) {
+        accountNodeRepository.save(accountMapper.toEntity(account));
+        return account;
     }
 
     @Override
-    public CompletableFuture<Optional<Account>> findById(Long id) {
-        return accountNodeRepository.findById(id)
-                .map(accountMapper::toDomain)
-                .map(Optional::ofNullable)
-                .toFuture();
+    public Optional<Account> findById(UUID id) {
+        return accountNodeRepository.findById(id).map(accountMapper::toDomain);
     }
 
     @Override
-    public CompletableFuture<List<Account>> findByFirstName(String name) {
-        return accountNodeRepository.findAccountEntityByNameContainsIgnoreCase(name)
+    public List<Account> findByFirstName(String name) {
+        return accountNodeRepository
+                .findAccountEntitiesByNameContainingIgnoreCase(name)
                 .map(accountMapper::toDomain)
-                .collectList()
-                .toFuture();
+                .toList();
     }
 
     @Override
-    public CompletableFuture<List<Account>> findByLastName(String name) {
-        return accountNodeRepository.findAccountEntitiesByLastNameContainsIgnoreCase(name)
+    public List<Account> findByLastName(String lastName) {
+        return accountNodeRepository
+                .findAccountEntitiesByLastNameContainingIgnoreCase(lastName)
                 .map(accountMapper::toDomain)
-                .collectList()
-                .toFuture();
+                .toList();
     }
 
     @Override
-    public CompletableFuture<List<Account>> findAll() {
-        return accountNodeRepository.findAll()
-                .map(accountMapper::toDomain)
-                .collectList()
-                .toFuture();
+    public List<Account> findAll() {
+        return accountNodeRepository
+                .findAll()
+                .stream().map(accountMapper::toDomain)
+                .toList();
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(UUID id) {
         accountNodeRepository.deleteById(id);
     }
 }
