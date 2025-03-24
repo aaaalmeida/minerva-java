@@ -19,8 +19,8 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Node("ACCOUNT")
-public class AccountEntity {
+@Node("AUTHOR")
+public class AuthorEntity {
     @Id
     @GeneratedValue
     private UUID id;
@@ -73,5 +73,5 @@ public class AccountEntity {
     private Boolean isRegistered;
 
     @Relationship(type = "FOLLOW")
-    private Set<AccountEntity> follows;
+    private Set<AuthorEntity> follows;
 }

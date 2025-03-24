@@ -11,7 +11,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Account {
+public class Author {
     private UUID id;
     private String name;
     private Optional<String> middleName;
@@ -21,5 +21,7 @@ public class Account {
     private Optional<String> url;
     private Optional<String> phone;
     private Boolean isRegistered;
-    private Set<Account> follows;
+
+    private Set<Author> follows;
+
 }
