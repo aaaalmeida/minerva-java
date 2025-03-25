@@ -1,18 +1,20 @@
 services:
 #  CONTAINER JAVA N RECONHECE JARFILE SOZINHO
 #  E NÃO ENCONTRA PORTA DO DB MESMO QUANDO ESTAO NA MESMA NETWORK
-#  app:
-#    container_name: "minerva-backend"
-#    build: .
-#    restart: always
-#    ports:
-#      - "${APP_PORT}:${APP_PORT}"
-#    environment:
-#      SPRING_NEO4J_URI: "${DATABASE_URL}"
-#      SPRING_NEO4J_AUTHENTICATION_USERNAME: "${DATABASE_USERNAME}"
-#      SPRING_NEO4J_AUTHENTICATION_PASSWORD: "${DATABASE_PASSWORD}"
-#    depends_on:
-#      - db
+  app:
+    container_name: "minerva-backend"
+    build: .
+    restart: always
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    environment:
+      SPRING_NEO4J_URI: "${DATABASE_URL}"
+      SPRING_NEO4J_AUTHENTICATION_USERNAME: "${DATABASE_USERNAME}"
+      SPRING_NEO4J_AUTHENTICATION_PASSWORD: "${DATABASE_PASSWORD}"
+    depends_on:
+      - db
+    networks:
+      rede:
 
   db:
     image: "neo4j:latest"
@@ -28,6 +30,11 @@ services:
       - /neo4j_data:/data
       - /neo4j_config:/config
       - /neo4j_plugins:/plugins
+    networks:
+      rede:
+
+networks:
+  rede:
 
 volumes:
   neo4j_data:
