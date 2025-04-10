@@ -5,6 +5,10 @@ import com.aaalmeida.minerva.domain.model.Author;
 import com.aaalmeida.minerva.infrastructure.dto.AuthorDTO;
 import com.aaalmeida.minerva.infrastructure.entity.AuthorEntity;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Optional;
+
 public class AuthorFactory {
     public static AuthorDTO toDTO(Author domain){
         return new AuthorDTO(
@@ -38,15 +42,15 @@ public class AuthorFactory {
         return new AuthorEntity(
                 domain.getUuid(),
                 domain.getName(),
-                domain.getMiddleName(),
+                domain.getMiddleName().orElse(null),
                 domain.getLastName(),
                 domain.getEmail(),
                 domain.getPassword(),
-                domain.getUrl(),
-                domain.getPhone(),
+                domain.getUrl().orElse(null),
+                domain.getPhone().orElse(null),
                 domain.getIsRegistered(),
-                domain.getFollows(),
-                domain.getFollowedBy()
+                new ArrayList(domain.getFollows()),
+                new ArrayList(domain.getFollowedBy())
         );
     }
 
@@ -54,15 +58,15 @@ public class AuthorFactory {
         return AuthorBuilder.builder()
                 .uuid(entity.getUuid())
                 .name(entity.getName())
-                .middleName(entity.getMiddleName())
+                .middleName(Optional.ofNullable(entity.getMiddleName()))
                 .lastName(entity.getLastName())
                 .email(entity.getEmail())
                 .password(entity.getPassword())
-                .url(entity.getUrl())
-                .phone(entity.getPhone())
+                .url(Optional.ofNullable(entity.getUrl()))
+                .phone(Optional.ofNullable(entity.getPhone()))
                 .isRegistered(entity.getIsRegistered())
-                .follows(entity.getFollows())
-                .followedBy(entity.getFollowedBy())
+                .follows(new HashSet(entity.getFollows()))
+                .followedBy(new HashSet(entity.getFollowedBy()))
                 .build();
     }
 }

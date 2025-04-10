@@ -12,7 +12,7 @@ public class AuthorBuilder {
     // builder gera id unico caso não seja previamente informado
     private UUID uuid = UUID.randomUUID();
     private String name;
-    private Optional<String> middleName;
+    private Optional<String> middleName = Optional.empty();
     private String lastName;
     private String email;
     private String password;

@@ -23,7 +23,7 @@ public class AuthorController {
 
     @GetMapping("/hello")
     public String hello() {
-        return "hellooooooo";
+        return "v1";
     }
 
     @GetMapping

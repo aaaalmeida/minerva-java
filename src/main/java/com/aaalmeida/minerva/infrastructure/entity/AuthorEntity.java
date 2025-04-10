@@ -8,8 +8,7 @@ import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 
-import java.util.Optional;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -28,7 +27,7 @@ public class AuthorEntity {
     private String name;
 
 //    @Pattern(regexp = "([a-zA-Z]|[à-ü]|[À-Ü])+([a-zA-Z]|[à-ü]|[À-Ü]| |')*")
-    private Optional<String> middleName;
+    private String middleName;
 
 //    @NotEmpty(message = "Last name is required")
 //    @Pattern(regexp = "([a-zA-Z]|[à-ü]|[À-Ü])+([a-zA-Z]|[à-ü]|[À-Ü]| |')*")
@@ -56,20 +55,20 @@ public class AuthorEntity {
      * path is optional
      */
 //    @Pattern(regexp = "^((https:\\/\\/)|(http:\\/\\/))?(www\\.)?[\\w]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)$")
-    private Optional<String> url;
+    private String url;
 
     /**
      * Between 9 and 12 numbers
      */
 //    @Pattern(regexp = "^(\\d{1,3})?(\\d){9}$")
-    private Optional<String> phone;
+    private String phone;
 
 //    @NotNull
     private Boolean isRegistered;
 
     @Relationship(type = "FOLLOW")
-    private Set<Follow> follows;
+    private List<Follow> follows;
 
     @Relationship(type = "FOLLOWED_BY")
-    private Set<Follow> followedBy;
+    private List<Follow> followedBy;
 }
