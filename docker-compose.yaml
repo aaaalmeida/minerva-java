@@ -1,6 +1,4 @@
 services:
-#  CONTAINER JAVA N RECONHECE JARFILE SOZINHO
-#  E NÃO ENCONTRA PORTA DO DB MESMO QUANDO ESTAO NA MESMA NETWORK
   app:
     container_name: "minerva-backend"
     build: .
@@ -14,7 +12,7 @@ services:
     depends_on:
       - db
     networks:
-      rede:
+      network:
 
   db:
     image: "neo4j:latest"
@@ -31,10 +29,10 @@ services:
       - /neo4j_config:/config
       - /neo4j_plugins:/plugins
     networks:
-      rede:
+      network:
 
 networks:
-  rede:
+  network:
 
 volumes:
   neo4j_data:

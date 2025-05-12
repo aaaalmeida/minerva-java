@@ -1,7 +1,8 @@
 package com.aaalmeida.minerva.application.useCase.Author;
 
-import com.aaalmeida.minerva.domain.model.Author;
 import com.aaalmeida.minerva.domain.repository.AuthorRepository;
+import com.aaalmeida.minerva.infrastructure.dto.AuthorDTO;
+import com.aaalmeida.minerva.infrastructure.mapper.AuthorMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 public class ListAllAuthorUseCase {
     private AuthorRepository authorRepository;
-    public List<Author> execute() {
-        return authorRepository.findAll();
+    public List<AuthorDTO> execute() {
+        return authorRepository.findAll()
+                .map(AuthorMapper::toDTO)
+                .toList();
     }
 }

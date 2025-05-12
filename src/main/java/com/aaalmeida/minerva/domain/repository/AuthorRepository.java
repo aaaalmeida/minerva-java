@@ -2,15 +2,17 @@ package com.aaalmeida.minerva.domain.repository;
 
 import com.aaalmeida.minerva.domain.model.Author;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 public interface AuthorRepository {
     Author save(Author author);
+    Author followAuthor(UUID baseId, UUID targetId);
+    void unfollowAuthor(UUID baseId, UUID targetId);
     Optional<Author> findById(UUID id);
-    List<Author> findByFirstName(String name);
-    List<Author> findByLastName(String lastName);
-    List<Author> findAll();
+    Stream<Author> findByFirstName(String name);
+    Stream<Author> findByLastName(String lastName);
+    Stream<Author> findAll();
     void deleteById(UUID id);
 }
