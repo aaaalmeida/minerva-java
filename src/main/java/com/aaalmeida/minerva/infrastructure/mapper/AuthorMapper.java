@@ -1,15 +1,17 @@
-package com.aaalmeida.minerva.infrastructure.factory;
+package com.aaalmeida.minerva.infrastructure.mapper;
 
+import com.aaalmeida.minerva.domain.exception.EntityNotFoundException;
+import com.aaalmeida.minerva.domain.model.Follow;
 import com.aaalmeida.minerva.infrastructure.builder.AuthorBuilder;
 import com.aaalmeida.minerva.domain.model.Author;
 import com.aaalmeida.minerva.infrastructure.dto.AuthorDTO;
-import com.aaalmeida.minerva.infrastructure.entity.AuthorEntity;
+import com.aaalmeida.minerva.infrastructure.persistence.entity.AuthorEntity;
+import com.aaalmeida.minerva.infrastructure.persistence.relationship.FollowRelationship;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
-public class AuthorFactory {
+public class AuthorMapper {
     public static AuthorDTO toDTO(Author domain){
         return new AuthorDTO(
                 domain.getUuid(),
@@ -21,8 +23,7 @@ public class AuthorFactory {
                 domain.getUrl(),
                 domain.getPhone(),
                 domain.getIsRegistered(),
-                domain.getFollows(),
-                domain.getFollowedBy()
+                domain.getFollows()
         );
     }
 
@@ -38,7 +39,7 @@ public class AuthorFactory {
                 .build();
     }
 
-    public static AuthorEntity toEntity(Author domain){
+    public static AuthorEntity toEntity(Author domain) {
         return new AuthorEntity(
                 domain.getUuid(),
                 domain.getName(),
@@ -49,8 +50,7 @@ public class AuthorFactory {
                 domain.getUrl().orElse(null),
                 domain.getPhone().orElse(null),
                 domain.getIsRegistered(),
-                new ArrayList(domain.getFollows()),
-                new ArrayList(domain.getFollowedBy())
+                domain.getFollows().stream().map(FollowMapper::toEntity).toList()
         );
     }
 
@@ -65,8 +65,7 @@ public class AuthorFactory {
                 .url(Optional.ofNullable(entity.getUrl()))
                 .phone(Optional.ofNullable(entity.getPhone()))
                 .isRegistered(entity.getIsRegistered())
-                .follows(new HashSet(entity.getFollows()))
-                .followedBy(new HashSet(entity.getFollowedBy()))
+                .follows(entity.getFollows().stream().map(FollowMapper::toDomain).toList())
                 .build();
     }
 }

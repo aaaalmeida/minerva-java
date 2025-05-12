@@ -1,6 +1,6 @@
 package com.aaalmeida.minerva.infrastructure.repository;
 
-import com.aaalmeida.minerva.infrastructure.entity.AuthorEntity;
+import com.aaalmeida.minerva.infrastructure.persistence.entity.AuthorEntity;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;
 

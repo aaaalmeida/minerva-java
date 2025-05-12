@@ -1,21 +1,21 @@
 package com.aaalmeida.minerva.domain.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
-//@NoArgsConstructor
+@AllArgsConstructor
 public class Follow {
     private UUID id;
     private LocalDate since;
-    private Author target;
+    private UUID authorUuid;
 
-    public Follow(Author target) {
+    public Follow(UUID authorUuid) {
         this.id = UUID.randomUUID();
         this.since = LocalDate.now();
-        this.target = target;
+        this.authorUuid = authorUuid;
     }
 }

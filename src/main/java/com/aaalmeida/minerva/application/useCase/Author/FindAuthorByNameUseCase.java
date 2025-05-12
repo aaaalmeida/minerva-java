@@ -2,7 +2,7 @@ package com.aaalmeida.minerva.application.useCase.Author;
 
 import com.aaalmeida.minerva.domain.repository.AuthorRepository;
 import com.aaalmeida.minerva.infrastructure.dto.AuthorDTO;
-import com.aaalmeida.minerva.infrastructure.factory.AuthorFactory;
+import com.aaalmeida.minerva.infrastructure.mapper.AuthorMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ public class FindAuthorByNameUseCase {
     private AuthorRepository authorRepository;
     public List<AuthorDTO> execute(String accountName) {
         return authorRepository.findByFirstName(accountName)
-                .map(AuthorFactory::toDTO)
+                .map(AuthorMapper::toDTO)
                 .toList();
     }
 }

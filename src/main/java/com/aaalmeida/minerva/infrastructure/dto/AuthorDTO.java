@@ -3,7 +3,7 @@ package com.aaalmeida.minerva.infrastructure.dto;
 import com.aaalmeida.minerva.domain.model.Follow;
 
 import java.util.Optional;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 public record AuthorDTO(
@@ -16,8 +16,7 @@ public record AuthorDTO(
         Optional<String> url,
         Optional<String> phone,
         Boolean isRegistered,
-        Set<Follow> follows,
-        Set<Follow> followedBy
+        List<Follow> follows
 ) {
 
 }

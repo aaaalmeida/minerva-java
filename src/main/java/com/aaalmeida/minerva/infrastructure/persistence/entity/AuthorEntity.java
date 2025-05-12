@@ -1,6 +1,6 @@
-package com.aaalmeida.minerva.infrastructure.entity;
+package com.aaalmeida.minerva.infrastructure.persistence.entity;
 
-import com.aaalmeida.minerva.domain.model.Follow;
+import com.aaalmeida.minerva.infrastructure.persistence.relationship.FollowRelationship;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -66,9 +66,6 @@ public class AuthorEntity {
 //    @NotNull
     private Boolean isRegistered;
 
-    @Relationship(type = "FOLLOW")
-    private List<Follow> follows;
-
-    @Relationship(type = "FOLLOWED_BY")
-    private List<Follow> followedBy;
+    @Relationship(type = "FOLLOW", direction = Relationship.Direction.OUTGOING)
+    private List<FollowRelationship> follows;
 }

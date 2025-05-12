@@ -4,7 +4,7 @@ import com.aaalmeida.minerva.domain.exception.EntityNotFoundException;
 import com.aaalmeida.minerva.domain.exception.InvalidUuidException;
 import com.aaalmeida.minerva.domain.repository.AuthorRepository;
 import com.aaalmeida.minerva.infrastructure.dto.AuthorDTO;
-import com.aaalmeida.minerva.infrastructure.factory.AuthorFactory;
+import com.aaalmeida.minerva.infrastructure.mapper.AuthorMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ public class FindAuthorByIdUseCase {
         try{
             UUID uuid = UUID.fromString(id);
             return authorRepository.findById(uuid)
-                    .map(AuthorFactory::toDTO)
+                    .map(AuthorMapper::toDTO)
                     .orElseThrow(
                             () -> new EntityNotFoundException(
                                     String.format("Author with %s not found", id)));

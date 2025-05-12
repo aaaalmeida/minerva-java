@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Optional;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -21,7 +21,21 @@ public class Author {
     private Optional<String> url;
     private Optional<String> phone;
     private Boolean isRegistered;
+    private List<Follow> follows;
 
-    private Set<Follow> follows;
-    private Set<Follow> followedBy;
+    public Boolean followAuthor(Author target) {
+        if (isFollower(target)) return false;
+
+        return follows.add(new Follow(target.getUuid()));
+    }
+
+    public Boolean unfollowAuthor(Author target){
+        if(!isFollower(target)) return false;
+
+        return follows.remove(target);
+    }
+
+    private Boolean isFollower(Author author) {
+        return follows.contains(author);
+    }
 }

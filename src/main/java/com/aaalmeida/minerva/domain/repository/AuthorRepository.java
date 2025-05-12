@@ -8,6 +8,8 @@ import java.util.stream.Stream;
 
 public interface AuthorRepository {
     Author save(Author author);
+    Author followAuthor(UUID baseId, UUID targetId);
+    void unfollowAuthor(UUID baseId, UUID targetId);
     Optional<Author> findById(UUID id);
     Stream<Author> findByFirstName(String name);
     Stream<Author> findByLastName(String lastName);

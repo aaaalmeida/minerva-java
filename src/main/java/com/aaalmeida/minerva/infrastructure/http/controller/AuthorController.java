@@ -2,6 +2,7 @@ package com.aaalmeida.minerva.infrastructure.http.controller;
 
 import com.aaalmeida.minerva.application.useCase.Author.*;
 import com.aaalmeida.minerva.infrastructure.dto.AuthorDTO;
+import com.aaalmeida.minerva.infrastructure.dto.FollowRequestDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,8 @@ public class AuthorController {
     private FindAuthorByNameUseCase findAuthorByNameUseCase;
     private FindAuthorByLastNameUseCase findAuthorByLastNameUseCase;
     private DeleteAuthorUseCase deleteAuthorUseCase;
+    private FollowAuthorUseCase followAuthorUseCase;
+    private UnfollowAuthorUseCase unfollowAuthorUseCase;
 
     @GetMapping("/hello")
     public String hello() {
@@ -61,11 +64,24 @@ public class AuthorController {
         return ResponseEntity.status(HttpStatus.CREATED).location(location).body(response);
     }
 
+    @PostMapping("/follow")
+    public ResponseEntity<AuthorDTO> followAuthor(@RequestBody FollowRequestDTO followRequestDTO) {
+        URI location = URI.create("author/" + followRequestDTO.baseId());
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .location(location)
+                .body(followAuthorUseCase.execute(followRequestDTO));
+    }
+
+    @DeleteMapping("/follow")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void unfollowAuthor(@RequestBody FollowRequestDTO followRequestDTO) {
+        unfollowAuthorUseCase.execute(followRequestDTO);
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAuthor(@PathVariable String id) {
         deleteAuthorUseCase.execute(id);
     }
-
-    public void followAuthor() {}
 }

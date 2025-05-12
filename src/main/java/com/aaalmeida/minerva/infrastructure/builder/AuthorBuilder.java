@@ -3,9 +3,9 @@ package com.aaalmeida.minerva.infrastructure.builder;
 import com.aaalmeida.minerva.domain.model.Author;
 import com.aaalmeida.minerva.domain.model.Follow;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Optional;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 public class AuthorBuilder {
@@ -20,8 +20,7 @@ public class AuthorBuilder {
     private Optional<String> phone = Optional.empty();
     // TODO: criar logica para autores cadastrados
     private Boolean isRegistered = false;
-    private Set<Follow> follows = new HashSet<>();
-    private Set<Follow> followedBy = new HashSet<>();
+    private List<Follow> follows = new ArrayList<>();
 
     private AuthorBuilder(){}
 
@@ -74,13 +73,8 @@ public class AuthorBuilder {
         return this;
     }
 
-    public AuthorBuilder follows(Set<Follow> follows) {
+    public AuthorBuilder follows(List<Follow> follows) {
         this.follows = follows;
-        return this;
-    }
-
-    public AuthorBuilder followedBy(Set<Follow> followedBy) {
-        this.followedBy = followedBy;
         return this;
     }
 
@@ -95,8 +89,7 @@ public class AuthorBuilder {
                 url,
                 phone,
                 isRegistered,
-                follows,
-                followedBy
+                follows
         );
     }
 }
