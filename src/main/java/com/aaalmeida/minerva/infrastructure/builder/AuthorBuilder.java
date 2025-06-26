@@ -1,30 +1,28 @@
 package com.aaalmeida.minerva.infrastructure.builder;
 
-import com.aaalmeida.minerva.domain.model.Author;
-import com.aaalmeida.minerva.domain.model.Follow;
+import com.aaalmeida.minerva.infrastructure.entity.AuthorEntity;
+import com.aaalmeida.minerva.infrastructure.entity.FollowEntity;
+import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
+@NoArgsConstructor
 public class AuthorBuilder {
-    // builder gera id unico caso não seja previamente informado
-    private UUID uuid = UUID.randomUUID();
+    private UUID uuid;
     private String name;
-    private Optional<String> middleName = Optional.empty();
+    private String middleName;
     private String lastName;
     private String email;
     private String password;
-    private Optional<String> url = Optional.empty();
-    private Optional<String> phone = Optional.empty();
+    private String url;
+    private String phone;
     // TODO: criar logica para autores cadastrados
     private Boolean isRegistered = false;
-    private List<Follow> follows = new ArrayList<>();
+    private Set<FollowEntity> follows = new HashSet<>();
 
-    private AuthorBuilder(){}
-
-    public static AuthorBuilder builder(){
+    public static AuthorBuilder builder() {
         return new AuthorBuilder();
     }
 
@@ -38,7 +36,7 @@ public class AuthorBuilder {
         return this;
     }
 
-    public AuthorBuilder middleName(Optional<String> middleName) {
+    public AuthorBuilder middleName(String middleName) {
         this.middleName = middleName;
         return this;
     }
@@ -58,12 +56,12 @@ public class AuthorBuilder {
         return this;
     }
 
-    public AuthorBuilder url(Optional<String> url) {
+    public AuthorBuilder url(String url) {
         this.url = url;
         return this;
     }
 
-    public AuthorBuilder phone(Optional<String> phone) {
+    public AuthorBuilder phone(String phone) {
         this.phone = phone;
         return this;
     }
@@ -73,23 +71,22 @@ public class AuthorBuilder {
         return this;
     }
 
-    public AuthorBuilder follows(List<Follow> follows) {
+    public AuthorBuilder follows(Set<FollowEntity> follows) {
         this.follows = follows;
         return this;
     }
 
-    public Author build(){
-        return new Author(
+    public AuthorEntity build() {
+        return new AuthorEntity(
                 uuid,
                 name,
-                middleName,
                 lastName,
                 email,
                 password,
+                follows,
+                middleName,
                 url,
-                phone,
-                isRegistered,
-                follows
+                phone
         );
     }
 }

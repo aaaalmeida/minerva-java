@@ -1,34 +1,30 @@
 package com.aaalmeida.minerva.infrastructure.mapper;
 
-import com.aaalmeida.minerva.domain.exception.EntityNotFoundException;
-import com.aaalmeida.minerva.domain.model.Follow;
 import com.aaalmeida.minerva.infrastructure.builder.AuthorBuilder;
-import com.aaalmeida.minerva.domain.model.Author;
 import com.aaalmeida.minerva.infrastructure.dto.AuthorDTO;
-import com.aaalmeida.minerva.infrastructure.persistence.entity.AuthorEntity;
-import com.aaalmeida.minerva.infrastructure.persistence.relationship.FollowRelationship;
+import com.aaalmeida.minerva.infrastructure.entity.AuthorEntity;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 public class AuthorMapper {
-    public static AuthorDTO toDTO(Author domain){
+    public static AuthorDTO toDTO(AuthorEntity author) {
         return new AuthorDTO(
-                domain.getUuid(),
-                domain.getName(),
-                domain.getMiddleName(),
-                domain.getLastName(),
-                domain.getEmail(),
-                domain.getPassword(),
-                domain.getUrl(),
-                domain.getPhone(),
-                domain.getIsRegistered(),
-                domain.getFollows()
+                author.getId(),
+                author.getName(),
+                author.getMiddleName(),
+                author.getLastName(),
+                author.getEmail(),
+                author.getPassword(),
+                author.getUrl(),
+                author.getPhone(),
+//                TODO
+                null
         );
     }
 
-    public static Author fromDTO(AuthorDTO dto){
+    public static AuthorEntity fromDTO(AuthorDTO dto) {
         return AuthorBuilder.builder()
+                .uuid(dto.uuid())
                 .name(dto.name())
                 .middleName(dto.middleName())
                 .lastName(dto.lastName())
@@ -36,36 +32,8 @@ public class AuthorMapper {
                 .password(dto.password())
                 .url(dto.url())
                 .phone(dto.phone())
-                .build();
-    }
-
-    public static AuthorEntity toEntity(Author domain) {
-        return new AuthorEntity(
-                domain.getUuid(),
-                domain.getName(),
-                domain.getMiddleName().orElse(null),
-                domain.getLastName(),
-                domain.getEmail(),
-                domain.getPassword(),
-                domain.getUrl().orElse(null),
-                domain.getPhone().orElse(null),
-                domain.getIsRegistered(),
-                domain.getFollows().stream().map(FollowMapper::toEntity).toList()
-        );
-    }
-
-    public static Author fromEntity(AuthorEntity entity){
-        return AuthorBuilder.builder()
-                .uuid(entity.getUuid())
-                .name(entity.getName())
-                .middleName(Optional.ofNullable(entity.getMiddleName()))
-                .lastName(entity.getLastName())
-                .email(entity.getEmail())
-                .password(entity.getPassword())
-                .url(Optional.ofNullable(entity.getUrl()))
-                .phone(Optional.ofNullable(entity.getPhone()))
-                .isRegistered(entity.getIsRegistered())
-                .follows(entity.getFollows().stream().map(FollowMapper::toDomain).toList())
+//                TODO
+                .follows(Set.of())
                 .build();
     }
 }

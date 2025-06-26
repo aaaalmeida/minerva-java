@@ -1,41 +1,52 @@
 services:
   app:
     container_name: "minerva-backend"
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: always
     ports:
       - "${APP_PORT}:${APP_PORT}"
     environment:
-      SPRING_NEO4J_URI: "${DATABASE_URL}"
-      SPRING_NEO4J_AUTHENTICATION_USERNAME: "${DATABASE_USERNAME}"
-      SPRING_NEO4J_AUTHENTICATION_PASSWORD: "${DATABASE_PASSWORD}"
+      - POSTGRES_USER=${DATABASE_USERNAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - SPRING_DATASOURCE_URL=${DATABASE_URL}
+      - SPRING_DATASOURCE_USERNAME=${DATABASE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${DATABASE_PASSWORD}
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     depends_on:
       - db
     networks:
-      network:
+      - network
 
   db:
-    image: "neo4j:latest"
+    image: postgres
     container_name: "minerva-db"
     restart: always
-    ports:
-      - "7474:7474"   #web interface
-      - "7687:7687"   #bolt protocol
-    environment:
-      - NEO4J_AUTH=${DATABASE_USERNAME}/${DATABASE_PASSWORD}
-    volumes:
-      - /neo4j_logs:/logs
-      - /neo4j_data:/data
-      - /neo4j_config:/config
-      - /neo4j_plugins:/plugins
+    shm_size: 128mb
     networks:
-      network:
+      - network
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_USER=${DATABASE_USERNAME}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    container_name: minerva-visualizer
+    restart: always
+    ports:
+      - "${ADMINER_PORT}:8080"
+    environment:
+      - ADMINER_DEFAULT_SERVER=${DATABASE_NAME}
+    networks:
+      - network
 
 networks:
   network:
+    driver: bridge
 
 volumes:
-  neo4j_data:
-  neo4j_logs:
-  neo4j_config:
-  neo4j_plugins:
+  db_data:

@@ -8,10 +8,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 //  TODO: adicionar referencia ao log de cada error depois que forem criados
 @RestControllerAdvice
@@ -47,6 +49,30 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
+                .contentType(MediaType.APPLICATION_PROBLEM_JSON)
+                .body(response);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidationError(
+            MethodArgumentNotValidException e, HttpServletRequest request) {
+        String details = e.getBindingResult().getFieldErrors().stream().map(
+                error -> String.format("%s : %s\n",
+                        error.getField(),
+                        error.getDefaultMessage())
+        ).collect(Collectors.joining(""));
+
+        ErrorResponse response = new ErrorResponse(
+                "",
+                "Validation",
+                HttpStatus.BAD_REQUEST, //400
+                details,
+                request.getRequestURI(),
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_PROBLEM_JSON)
                 .body(response);
     }

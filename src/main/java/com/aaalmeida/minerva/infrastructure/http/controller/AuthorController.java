@@ -3,6 +3,7 @@ package com.aaalmeida.minerva.infrastructure.http.controller;
 import com.aaalmeida.minerva.application.useCase.Author.*;
 import com.aaalmeida.minerva.infrastructure.dto.AuthorDTO;
 import com.aaalmeida.minerva.infrastructure.dto.FollowRequestDTO;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class AuthorController {
 
     @GetMapping("/hello")
     public String hello() {
-        return "v1";
+        return "v2";
     }
 
     @GetMapping
@@ -44,28 +45,28 @@ public class AuthorController {
     }
 
     @GetMapping("/name={name}")
-    public ResponseEntity<List<AuthorDTO>> findAuthorByName(@PathVariable String name){
+    public ResponseEntity<List<AuthorDTO>> findAuthorByName(@PathVariable String name) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(findAuthorByNameUseCase.execute(name));
     }
 
     @GetMapping("/lastname={lastName}")
-    public ResponseEntity<List<AuthorDTO>> findAuthorByLastName(@PathVariable String lastName){
+    public ResponseEntity<List<AuthorDTO>> findAuthorByLastName(@PathVariable String lastName) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(findAuthorByLastNameUseCase.execute(lastName));
     }
 
     @PostMapping
-    public ResponseEntity<AuthorDTO> createAuthor(@RequestBody AuthorDTO author) {
+    public ResponseEntity<AuthorDTO> createAuthor(@RequestBody @Valid AuthorDTO author) {
         AuthorDTO response = createAuthorUseCase.execute(author);
-        URI location = URI.create("/author/" + response.id());
+        URI location = URI.create("/author/" + response.uuid());
         return ResponseEntity.status(HttpStatus.CREATED).location(location).body(response);
     }
 
     @PostMapping("/follow")
-    public ResponseEntity<AuthorDTO> followAuthor(@RequestBody FollowRequestDTO followRequestDTO) {
+    public ResponseEntity<AuthorDTO> followAuthor(@RequestBody @Valid FollowRequestDTO followRequestDTO) {
         URI location = URI.create("author/" + followRequestDTO.baseId());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -75,7 +76,7 @@ public class AuthorController {
 
     @DeleteMapping("/follow")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void unfollowAuthor(@RequestBody FollowRequestDTO followRequestDTO) {
+    public void unfollowAuthor(@RequestBody @Valid FollowRequestDTO followRequestDTO) {
         unfollowAuthorUseCase.execute(followRequestDTO);
     }
 

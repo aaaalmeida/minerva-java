@@ -2,7 +2,7 @@ package com.aaalmeida.minerva.application.useCase.Author;
 
 import com.aaalmeida.minerva.domain.exception.InvalidRelationshipException;
 import com.aaalmeida.minerva.domain.exception.InvalidUuidException;
-import com.aaalmeida.minerva.domain.repository.AuthorRepository;
+import com.aaalmeida.minerva.domain.service.AuthorService;
 import com.aaalmeida.minerva.infrastructure.dto.AuthorDTO;
 import com.aaalmeida.minerva.infrastructure.dto.FollowRequestDTO;
 import com.aaalmeida.minerva.infrastructure.mapper.AuthorMapper;
@@ -14,7 +14,7 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class FollowAuthorUseCase {
-    private AuthorRepository authorRepository;
+    private AuthorService authorRepository;
 
     public AuthorDTO execute(FollowRequestDTO followRequestDTO) {
         try {
